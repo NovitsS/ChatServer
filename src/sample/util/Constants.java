@@ -7,6 +7,7 @@ public class Constants {
     public static final String KIND_ADD = "add";
     public static final String KIND_OFFLINE_MSG = "offline_msg";
     public static final String KIND_OFFLINE = "offline";
+    public static final String KIND_REQUEST_OFFLINE_MSG = "request_offline_msg";
 
     public static final String ERROR_NO_MATCH="账号不存在";
     public static final String ERROR_ACCOUNT_PASSWORD="账号密码不匹配";

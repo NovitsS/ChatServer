@@ -6,11 +6,13 @@ public class User {
     public String isOnline;
     public String pwd;
     public String offlineMsg;
+    public int port;
 
-    public User(String id,String pwd,String ip){
+    public User(String id,String pwd,String ip,int port){
         this.id=id;
         this.pwd=pwd;
         this.ip=ip;
+        this.port = port;
         isOnline = "true";
         offlineMsg = "false";
     }
@@ -53,5 +55,13 @@ public class User {
 
     public String getPwd() {
         return pwd;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

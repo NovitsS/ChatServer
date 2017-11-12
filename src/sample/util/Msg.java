@@ -11,6 +11,7 @@ public class Msg implements Serializable{
     public String id=null;
     public String msgContent=null;
     public String icon;
+    public int port;
 
     public Msg(String kind) {
         this.kind = kind;
@@ -66,5 +67,13 @@ public class Msg implements Serializable{
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

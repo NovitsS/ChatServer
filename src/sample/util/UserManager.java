@@ -36,6 +36,9 @@ public class UserManager implements Runnable{
             case Constants.KIND_OFFLINE:
                 offline();
                 break;
+            case Constants.KIND_REQUEST_OFFLINE_MSG:
+                requestOfflineMsg();
+                break;
         }
     }
 
@@ -48,18 +51,7 @@ public class UserManager implements Runnable{
                 msg.setContent(Constants.SUCESS_LOGIN);
                 Thread thread = new Thread(new ToClient(msg));
                 thread.start();
-                if(user.getOfflineMsg().equals("true")){
-                    List<String> list = Main.msgMap.get(user.getId());
-                    for(int i=0;i<list.size();i++){
-                        Msg msg1=new Msg(Constants.KIND_SERVER);
-                        msg1.setContent("offlineMsg");
-                        msg1.setIsOnLine(list.get(i));
-                        Thread thread1 = new Thread(new ToClient(msg));
-                        thread1.start();
-                    }
-                    user.setOfflineMsg("false");
-                    Main.msgMap.remove(dataPacket.getUserAccount());
-                }
+
             }else{
                 Msg msg = new Msg(Constants.KIND_SERVER);
                 msg.setContent(Constants.ERROR_ACCOUNT_PASSWORD);
@@ -82,7 +74,8 @@ public class UserManager implements Runnable{
             Thread thread = new Thread(new ToClient(msg));
             thread.start();
         }else{
-            User newUser = new User(dataPacket.getUserAccount(), dataPacket.getUserPassword(), dataPacket.getUserIP());
+            User newUser = new User(dataPacket.getUserAccount(), dataPacket.getUserPassword(), dataPacket.getUserIP(), dataPacket.getPort());
+
             Main.map.put(newUser.getId(), newUser);
             Msg msg = new Msg(Constants.KIND_SERVER);
             msg.setContent(Constants.SUCESS_REGISTER);
@@ -126,6 +119,7 @@ public class UserManager implements Runnable{
             msg.setIp(user.getIp());
             msg.setId(dataPacket.getTargetId());
             msg.setIsOnLine(user.getIsOnline());
+            msg.setPort(user.getPort());
             Thread thread = new Thread(new ToClient(msg));
             thread.start();
         }else{
@@ -153,6 +147,26 @@ public class UserManager implements Runnable{
         if(user!=null){
             user.setNotOnLine();
         }else{
+        }
+    }
+
+    private void requestOfflineMsg(){
+        User user = Main.map.get(dataPacket.getUserAccount());
+        if (user != null) {
+            if(user.getOfflineMsg().equals("true")){
+                List<String> list = Main.msgMap.get(user.getId());
+                for(int i=0;i<list.size();i++){
+                    Msg msg1=new Msg(Constants.KIND_SERVER);
+                    msg1.setContent("offlineMsg");
+                    msg1.setIsOnLine(list.get(i));
+                    Thread thread1 = new Thread(new ToClient(msg1));
+                    thread1.start();
+                }
+                user.setOfflineMsg("false");
+                Main.msgMap.remove(dataPacket.getUserAccount());
+            }
+        }else{
+            //TODO:处理用户不存在的情况
         }
     }
 

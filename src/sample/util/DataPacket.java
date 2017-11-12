@@ -11,6 +11,7 @@ public class DataPacket implements Serializable{
     private String userIP;
     private String targetId;
     private String content;
+    private int port;
 
     public DataPacket(String kind) {
         this.kind=kind;
@@ -66,5 +67,13 @@ public class DataPacket implements Serializable{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
